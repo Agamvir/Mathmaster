@@ -27,7 +27,7 @@ export default class Portal extends Component {
     switch (randomNumber) { // Corrected
       case 1:
         this.setState({
-          correspondingMessage: '"Glad you are here to rock and roll."',
+          correspondingMessage: '"Aspire."',
         });
         break;
       case 2:
@@ -42,12 +42,12 @@ export default class Portal extends Component {
         break;
       case 4:
         this.setState({
-          correspondingMessage: '"We were all beginners at some point."',
+          correspondingMessage: '"The most talented man was once a beginner."',
         });
         break;
       case 5:
         this.setState({
-          correspondingMessage: '"Perseverance and hard work is the recipe."',
+          correspondingMessage: '"Begin your adventure."',
         });
         break;
       default:
@@ -57,16 +57,6 @@ export default class Portal extends Component {
     }
   };
 
-  trainTime = () => {
-    this.props.navigation.navigate('Preface');
-  };
-  lockerTime = () => {
-    this.props.navigation.navigate('Locker');
-  };
-  statsTime = () => {
-    this.props.navigation.navigate('Stats');
-  };
-
   render() {
     return (
       <View style={styles.container}>
@@ -74,31 +64,20 @@ export default class Portal extends Component {
         <Text style={styles.header}>{this.state.correspondingMessage}</Text>
         <Text style={styles.caption}>Select whether you will train by yourself or go into a match with other players.</Text>
         <View style={styles.buttonContainer}>
-          <Image
-            style={styles.imageIcon}
-            source={require('../prototypes/TrainIcon.png')}
-          />
           <Pressable
             style={styles.trainButton}
-            onPress={this.trainTime}>
+            onPress={()=>this.props.navigation.navigate('Preface')}>
             <Text style={styles.displayText}>Train</Text>
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
-          <Image
-            style={styles.imageIcon}
-            source={require('../prototypes/MasteryIcon.png')}
-          />
-          <Pressable style={styles.masteryButton} onPress={this.statsTime}>
+          <Pressable style={styles.masteryButton}
+          onPress={()=>this.props.navigation.navigate('Stats')}>
             <Text style={styles.displayText}>Mastery</Text>
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
-          <Image
-            style={styles.imageIcon}
-            source={require('../prototypes/ProfileIcon.png')}
-          />
-          <Pressable style={styles.lockerButton} onPress={this.lockerTime}>
+          <Pressable style={styles.lockerButton} onPress={()=>this.props.navigation.navigate('Locker')}>
             <Text style={styles.displayText}>Settings</Text>
           </Pressable>
         </View>
