@@ -1,45 +1,43 @@
 import React, { Component } from 'react';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-// import firebase from 'firebase/app';
-// import { firebaseConfig } from './config';
-import LoginScreen from './screens/Login';
-import Portal from './screens/Portal';
-import Locker from './screens/Locker';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Preface from './screens/TrainingPreface';
-import MasteryModes from './screens/MasteryModes';
+import Portal from './screens/Portal';
+import LoginScreen from './screens/Login';
+import Locker from './screens/Locker';
 import Stats from './screens/Stats';
-import { Alert, Text } from 'react-native';
+import MasteryModes from './screens/MasteryModes';
+import firebase from 'firebase/app';
+import { firebaseConfig } from './config'
 
-//Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
-
-const StackNavigator = createStackNavigator(
-  {
-    LoginScreen: { screen: LoginScreen },
-    Portal: { screen: Portal },
-    Locker: { screen: Locker },
-    Preface: { screen: Preface },
-    MasteryModes: { screen: MasteryModes },
-    Stats: { screen: Stats }
-  },
-  {
-    initialRouteName: 'LoginScreen', // Set the initial route
-    headerMode: 'none', // Hide navigation header
-  }
-);
-
-const AppContainer = createAppContainer(StackNavigator);
+const Stack = createStackNavigator();
 
 export default class App extends Component {
+  componentDidMount(){
+    console.log('app.js')
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      } else {
+        firebase.app();
+      }
+      console.log('Firebase initialized successfully');
+    } catch (error) {
+      console.error('Error initializing Firebase' + error);
+    }
+  }
   render() {
-    console.log("inside app.js");
-    return(
-    <AppContainer />
-    )
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Portal" component={Portal} />
+          <Stack.Screen name="Preface" component={Preface} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="Locker" component={Locker} />
+          <Stack.Screen name="Stats" component={Stats} />
+          <Stack.Screen name="MasteryModes" component={MasteryModes} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
   }
 }
