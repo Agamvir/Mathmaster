@@ -1,57 +1,76 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
+// import 'firebase/auth';
+// import { AuthSession } from 'expo';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userSignedIn: false,
       errorMessage: ''
     };
   }
 
-  googleSignIn = async () => {
-    try {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const result = await firebase.auth().signInWithPopup(provider);
-      const user = result.user;
+  // googleSignIn = async () => {
+  //   try {
+  //     const redirectUrl = AuthSession.getRedirectUrl();
+  //     const result = await AuthSession.startAsync({
+  //       authUrl:
+  //         `https://accounts.google.com/o/oauth2/v2/auth?` +
+  //         `&client_id=${'766057186944-3lravlmv1js8tco9rme3utrffdbbdopb.apps.googleusercontent.com'}` +
+  //         `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
+  //         `&response_type=token` +
+  //         `&scope=openid%20profile%20email`,
+  //     });
 
-      // Truncate displayName if longer than 8 characters
-      let displayName = user.displayName;
-      if (displayName.length > 8) {
-        displayName = displayName.substring(0, 8);
-      }
+  //     if (result.type === 'success') {
+  //       const { id_token } = result.params;
+  //       const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+  //       await firebase.auth().signInWithCredential(credential);
+        
+  //       // Now handle updating user details in Firebase
+  //       const user = firebase.auth().currentUser;
+  //       if (user) {
+  //         let displayName = user.displayName;
+  //         if (displayName.length > 8) {
+  //           displayName = displayName.substring(0, 8);
+  //         }
 
-      const userRef = firebase.database().ref("/users/" + user.uid);
-      userRef.once('value', snapshot => {
-        if (!snapshot.exists()) {
-          userRef.set({ 
-            displayName: displayName,
-            email: user.email,
-            gainedMP: 0,
-            league: 'Bronze',
-            nextLeague: 'Silver',
-            neededMP: 1000,
-            searching: false
-          });
-        }
-      });
-      
-      // Navigate to the portal after sign-in
-      this.props.navigation.navigate('Portal');
-    } catch (error) {
-      console.error('Google sign-in error:', error.message); // Log error message
-      this.setState({ errorMessage: 'Error logging in: ' + error.message }); // Update error message state
-    }
-  };
+  //         const userRef = firebase.database().ref("/users/" + user.uid);
+  //         userRef.once('value', snapshot => {
+  //           if (!snapshot.exists()) {
+  //             userRef.set({ 
+  //               displayName: displayName,
+  //               email: user.email,
+  //               gainedMP: 0,
+  //               league: 'Bronze',
+  //               nextLeague: 'Silver',
+  //               neededMP: 1000,
+  //               searching: false,
+  //               playerNum: 0,
+  //               queueNum: 0,
+  //               
+  //             });
+  //           }
+  //         });
+
+  //         // Navigate to the portal after sign-in
+  //         this.props.navigation.navigate('Portal');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Google sign-in error:', error.message);
+  //     this.setState({ errorMessage: 'Error logging in' });
+  //   }
+  // };
 
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>MATHMASTER</Text>
         <Text style={styles.caption}>Login to your account.</Text>
-        <Pressable style={styles.button} onPress={this.googleSignIn}>
+        <Pressable style={styles.button} onPress={()=>this.props.navigation.navigate('Portal')}>
           <Text style={styles.buttonText}>Sign In with Google</Text>
         </Pressable>
         <Text style={[styles.caption, { color: 'red' }]}>{this.state.errorMessage}</Text>
