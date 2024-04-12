@@ -125,10 +125,6 @@ export default class Preface extends Component {
       } else {
         this.setState({ feedbackResponse: 'Incorrect.' });
       }
-
-      if (this.state.questionNumber == 10) {
-        this.setState({gameState: 2})
-      }
     }
 
     // Proceed to the next question regardless of the answer
@@ -143,6 +139,10 @@ export default class Preface extends Component {
       questionNumber: prevState.questionNumber + 1,
       answer: '',
     }));
+
+    if (this.state.questionNumber >= 10) {
+      this.setState({gameState: 2})
+    }
   };
 
   render() {
@@ -266,8 +266,8 @@ export default class Preface extends Component {
           <Pressable
             style={
               this.state.difficulty === 'Medium'
-                ? [styles.difficultyButton, { backgroundColor: 'white' }]
-                : [styles.difficultyButton]
+                ? [styles.button, { backgroundColor: 'white' }]
+                : [styles.button, { backgroundColor: '#42464d' }]
             }
             onPress={() => {
               if (this.state.difficulty !== 'Medium') {
@@ -360,8 +360,7 @@ export default class Preface extends Component {
             Average Time Taken: {averageTime.toFixed(2)} seconds
           </Text>
           <Pressable
-            style={styles.portalNavigator}
-            onPress={() => this.props.navigation.navigate('Portal')}>
+            style={styles.portalNavigator} onPress={()=>this.props.navigation.navigate('Portal')}>
             <Text style={[styles.displayText, {color: 'black'}]}>Portal</Text>
           </Pressable>
         </View>
